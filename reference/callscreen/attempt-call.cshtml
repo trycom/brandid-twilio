@@ -1,0 +1,26 @@
+@{
+    Response.ContentType = "text/xml";
+
+    var twiml = new Twilio.TwiML.TwilioResponse();
+    
+    // Set the numbers to call
+    string[] numbers = { "<number to call 1>", "<number to call 2>", "<number to call n>" };
+    
+    int number_index = Request["number_index"]!=null ? int.Parse(Request["number_index"]) : 0;
+    string DialCallStatus = Request["DialCallStatus"]!=null ? Request["DialCallStatus"] : "";
+ 
+    // Check the status of the call and 
+    // that there is a valid number to call
+ 
+    if(DialCallStatus!="completed" && number_index < numbers.Length)
+    {
+        twiml.Dial(
+            new Twilio.TwiML.Number(numbers[number_index], new { url = "screen-for-machine.cshtml" }),
+            new { action = string.Format("attempt-call.cshtml?number_index={0}", number_index+1) });
+    } 
+    else 
+    {
+        twiml.Hangup();
+    }
+}
+@Html.Raw(twiml.ToString())

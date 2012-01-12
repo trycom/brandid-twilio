@@ -1,0 +1,8 @@
+@{
+    Response.ContentType="text/xml";
+
+    var twiml = new Twilio.TwiML.TwilioResponse();
+
+    twiml.Say("Connecting");
+}
+@Html.Raw(twiml.ToString())

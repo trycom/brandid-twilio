@@ -1,0 +1,10 @@
+@{
+    Response.ContentType="text/xml";
+
+    var twiml = new Twilio.TwiML.TwilioResponse();
+
+    twiml.BeginGather(new { action = "complete-call.cshtml" })
+        .Say("Press any key to accept this call");
+    twiml.EndGather();
+}
+@Html.Raw(twiml.ToString())

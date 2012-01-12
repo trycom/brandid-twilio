@@ -1,0 +1,302 @@
+"General"
+{
+"ProjectType" = "local"
+"AutoLoadTemplate" = "%s.php;class.%s.php;"
+"IncludeDirs" = ""
+}
+"Configurations"
+{
+    "Local|PHP 5.2"
+    {
+    }
+    "Staging|PHP 5.2"
+    {
+    }
+    "Production|PHP 5.2"
+    {
+    }
+}
+"Files"
+{
+    "application"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\autoload.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\config.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\constants.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\database.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\doctypes.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\foreign_chars.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\hooks.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\migration.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\mimes.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\profiler.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\routes.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\smileys.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\twilio.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\config\\user_agents.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\controllers"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\controllers\\brandidsupport.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\controllers\\twilio_demo.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\controllers\\welcome.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\core"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\core\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\errors"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\errors\\error_404.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\errors\\error_db.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\errors\\error_general.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\errors\\error_php.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\errors\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\helpers"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\helpers\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\hooks"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\hooks\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\language"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\language\\english"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\language\\english\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\libraries"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\libraries\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\libraries\\Twilio.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\logs"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\logs\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\models"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\models\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\third_party"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\third_party\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\views"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\views\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\views\\welcome_message.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "index.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Benchmark.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\CodeIgniter.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Common.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Config.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Controller.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Exceptions.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Hooks.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Input.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Lang.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Loader.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Model.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Output.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Router.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Security.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\URI.php"
+    {
+    "ProjRelPath" = "T"
+    }
+    "system\\core\\Utf8.php"
+    {
+    "ProjRelPath" = "T"
+    }
+}
+"ProjStartupServices"
+{
+}
+"Globals"
+{
+}
+"References"
+{
+}
