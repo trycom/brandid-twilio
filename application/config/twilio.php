@@ -38,7 +38,22 @@ $config['api_version']   = '2010-04-01';
 /**
 * Twilio Phone Number
 **/
-$config['number']        = '';
+$config['number']        = '+442071838750';
 
+/**
+* Outgoing calls number
+*/
+$config['caller_id']        = '+447764942885';
 
+/**
+ * Default voice
+ */
+$config['voice_gender'] = 'woman';
+$config['voice_language'] = 'en-gb';
+
+/**
+ * Avoid going to voicemail with a short dial duration
+ */
+
+$config['no_voicemail_timeout'] = 20;
 /* End of file twilio.php */

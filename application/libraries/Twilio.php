@@ -89,7 +89,7 @@
 			return $this->_twilio->request($url, 'POST', $data);
 		}
 
-		public function response()
+		public function addResponse()
 		{
 			return new Response();
 		}
