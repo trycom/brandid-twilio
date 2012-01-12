@@ -43,7 +43,7 @@ $config['number']        = '+442071838750';
 /**
 * Outgoing calls number
 */
-$config['caller_id']        = '+447764942885';
+$config['caller_id']        = '+442074914870';
 
 /**
  * Default voice
@@ -56,4 +56,13 @@ $config['voice_language'] = 'en-gb';
  */
 
 $config['no_voicemail_timeout'] = 20;
+
+
+/**
+ * Office hours
+ */
+
+$config['office_hours_start'] = 10;
+$config['office_hours_end'] = 19;
+
 /* End of file twilio.php */
