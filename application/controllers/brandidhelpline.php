@@ -169,7 +169,6 @@ class brandidhelpline extends CI_Controller
 	 */	
 	function callagent()
 	{
-		$this->_writelog("callagent I'm here!");
 		$response = $this->twilio->addResponse();
 
 		if (isset($_REQUEST['ConferenceSid']))
