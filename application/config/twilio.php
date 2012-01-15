@@ -38,12 +38,20 @@ $config['api_version']   = '2010-04-01';
 /**
 * Twilio Phone Number
 **/
-$config['number']        = '+442071838750';
+$config['number']        = '+';
 
 /**
 * Outgoing calls number
 */
-$config['caller_id']        = '+442074914870';
+$config['caller_id']        = '+';
+
+/**
+ * Support numbers
+ */
+
+$config['support_office'] = '+';
+
+$config['support_mobile'] = '+';
 
 /**
  * Default voice
@@ -59,10 +67,23 @@ $config['no_voicemail_timeout'] = 20;
 
 
 /**
- * Office hours
+ * Office hours (code assumes closed at weekends)
  */
 
 $config['office_hours_start'] = 10;
 $config['office_hours_end'] = 19;
+
+/**
+ * Hold music to play
+ */
+
+$config['hold_music'] = 'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
+
+/**
+ * Log calls?
+ */
+
+$config['twilio_log'] = true;
+$config['twilio_logfile'] = 'twilio.log';
 
 /* End of file twilio.php */

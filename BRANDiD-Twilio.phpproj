@@ -90,7 +90,7 @@
     {
     "ProjRelPath" = "T"
     }
-    "application\\controllers\\brandidsupport.php"
+    "application\\controllers\\brandidhelpline.php"
     {
     "ProjRelPath" = "T"
     }
@@ -203,6 +203,10 @@
     "ProjRelPath" = "T"
     }
     "application\\views\\index.html"
+    {
+    "ProjRelPath" = "T"
+    }
+    "application\\views\\response_view.php"
     {
     "ProjRelPath" = "T"
     }

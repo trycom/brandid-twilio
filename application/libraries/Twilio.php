@@ -38,12 +38,11 @@
 			$this->_ci->load->config('twilio', TRUE);
 
 			//get settings from config
-			$this->mode        = $this->_ci->config->item('mode', 'twilio');
-			$this->account_sid = $this->_ci->config->item('account_sid', 'twilio');
-			$this->auth_token  = $this->_ci->config->item('auth_token', 'twilio');
-			$this->api_version = $this->_ci->config->item('api_version', 'twilio');
-			$this->number      = $this->_ci->config->item('number', 'twilio');
-
+			$this->mode        = $this->_ci->config->item('mode');
+			$this->account_sid = $this->_ci->config->item('account_sid');
+			$this->auth_token  = $this->_ci->config->item('auth_token');
+			$this->api_version = $this->_ci->config->item('api_version');
+			$this->number      = $this->_ci->config->item('number');
 
 			//initialize the client
 			$this->_twilio = new TwilioRestClient($this->account_sid, $this->auth_token);
@@ -75,7 +74,7 @@
 		 */
 		public function sms($from, $to, $message)
 		{
-			$url = '/' . $this->api_version . '/Accounts/' . $this->account_sid . '/SMS/Messages';
+			$url = $this->api_version . '/Accounts/' . $this->account_sid . '/SMS/Messages';
 
 			$data = array(
 						'From'   => $from,
@@ -88,6 +87,46 @@
 
 			return $this->_twilio->request($url, 'POST', $data);
 		}
+
+		/**
+		 * Make a call
+		 * 
+		 * @param string $from Source phone number
+		 * @param string $to Destination phone number
+		 * @param array $vars Any parameters accepted by Twilio for making calls
+		 */
+
+		public function call($from, $to, $vars = array())
+		{
+			$call_url = $this->api_version . '/Accounts/' . $this->account_sid . '/Calls';
+
+			$data = array_merge(array(
+				'From' => $from,
+				'To' => $to,
+			), $vars);
+
+			if ($this->mode == 'sandbox') $data['From'] = $this->number;
+			return $this->_twilio->request($call_url, 'POST', $data);
+		}
+
+		/**
+		 * Modify an existing call
+		 *
+		 * @param string $call_sid The Sid of the call to modify
+		 * @param string $url The URL to which to redirect the call
+		 * @param array $vars Any additional parameters to pass to Twilio
+		 *
+		 */		
+		public function modifyCall($call_sid, $url, $vars = array())
+		{
+			$call_url = $this->api_version . '/Accounts/' . $this->account_sid . '/Calls/' . $call_sid;
+			$data = array_merge(array('Url' => $url), $vars);
+			return $this->_twilio->request($call_url, 'POST', $data);
+		}
+
+		/**
+		 * Create a Response object for returning Twiml to Twilio.
+		 */
 
 		public function addResponse()
 		{

@@ -14,8 +14,8 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://katie/BRANDiD-Twilio/';
-//$config['base_url']	= 'http://bits.meloncholy.com/brandid-twilio/';
+//$config['base_url']	= 'http://katie/BRANDiD-Twilio/';
+$config['base_url']	= 'http://bits.meloncholy.com/brandid-twilio/';
 
 /*
 |--------------------------------------------------------------------------
