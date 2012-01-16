@@ -26,4 +26,5 @@ obj/
 _ReSharper*/
 [Tt]est[Rr]esult*
 application/config/twilio - Copy.php
+application/config/config - Copy.php
 application/controllers/brandidhelpline - Copy.php

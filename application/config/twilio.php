@@ -50,7 +50,6 @@ $config['caller_id']        = '+';
  */
 
 $config['support_office'] = '+';
-
 $config['support_mobile'] = '+';
 
 /**
@@ -65,13 +64,19 @@ $config['voice_language'] = 'en-gb';
 
 $config['no_voicemail_timeout'] = 20;
 
+/**
+ * Length of time between agent nag messages. Replayed attempts times before moving on. 
+ */
+ 
+$config['agent_timeout'] = 10;
+$config['agent_attempts'] = 3;
 
 /**
- * Office hours (code assumes closed at weekends)
+ * Office hours (code assumes closed at weekends). Office hours end after XX:59. 
  */
 
 $config['office_hours_start'] = 10;
-$config['office_hours_end'] = 19;
+$config['office_hours_end'] = 18;
 
 /**
  * Hold music to play

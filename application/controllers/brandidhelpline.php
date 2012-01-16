@@ -7,6 +7,8 @@ class brandidhelpline extends CI_Controller
 	protected $support_mobile;
 	protected $voice;
 	protected $no_voicemail_timeout;
+	protected $agent_timeout;
+	protected $agent_attempts;
 	protected $office_hours_start;
 	protected $office_hours_end;
 	protected $hold_music;
@@ -17,7 +19,7 @@ class brandidhelpline extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->config('twilio');
-		$this->load->library('twilio');
+		$this->load->library(array('twilio', 'session'));
 		$this->load->helper(array('url', 'file'));
 
 		$this->caller_id = $this->config->item('caller_id');
@@ -25,6 +27,8 @@ class brandidhelpline extends CI_Controller
 		$this->support_mobile = $this->config->item('support_mobile');
 		$this->voice = array('voice' => $this->config->item('voice_gender'), 'language' => $this->config->item('voice_language'));
 		$this->no_voicemail_timeout = $this->config->item('no_voicemail_timeout');
+		$this->agent_timeout = $this->config->item('agent_timeout');
+		$this->agent_attempts = $this->config->item('agent_attempts');
 		$this->office_hours_start = $this->config->item('office_hours_start');
 		$this->office_hours_end = $this->config->item('office_hours_end');
 		$this->hold_music = $this->config->item('hold_music');
@@ -45,7 +49,7 @@ class brandidhelpline extends CI_Controller
 		// Reject out of hours calls
 		if ($hour < $this->office_hours_start || $hour > $this->office_hours_end || $day == 0 || $day == 6)
 		{
-			$response->addSay("Thank you for calling BRANDiD customer support. I'm afraid we're currently closed. Please call back " . $this->office_hours_start . 'am to ' . ($this->office_hours_end - 12) . 'pm Monday to Friday.', $this->voice);
+			$response->addSay("Thank you for calling branded customer support. I'm afraid we're currently closed. Please call back " . $this->office_hours_start . 'am to ' . ($this->office_hours_end - 12) . 'pm Monday to Friday.', $this->voice);
 			$this->_writelog("Out of hours call.");
 		}
 		else
@@ -58,23 +62,24 @@ class brandidhelpline extends CI_Controller
 				{
 					$conference_sid = $_REQUEST['CallSid'];
 					$call_from = isset($_REQUEST['From']) ? $_REQUEST['From'] : $this->caller_id;
-
+					
+					$this->session->set_userdata('Accepted', 'false');
 					$this->twilio->call($call_from, $this->support_office, array('Url' => site_url('brandidhelpline/callagent/?ConferenceSid=' . urlencode($conference_sid)), 'StatusCallback' => site_url('brandidhelpline/forwardcall/?ConferenceSid=' . urlencode($conference_sid) . '&CallFrom=' . urlencode($call_from))));
 
-					$response->addSay('Thank you for calling BRANDiD customer support. Please hold.', $this->voice);
+					$response->addSay('Thank you for calling branded customer support. Please wait while we connect you to a support agent.', $this->voice);
 					$dial = $response->addDial();
 					$dial->addConference($conference_sid, array('waitUrl' => $this->hold_music, 'beep' => 'false'));
 					$this->_writelog("$conference_sid Connecting call... (index)");
 				}
 				else
 				{
-					$response->addSay("Thank you for calling BRANDiD customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
+					$response->addSay("Thank you for calling branded customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
 					$this->_writelog("ERROR No CallSid (index).");
 				}
 			}
 			catch (Exception $e)
 			{
-				$response->addSay("Thank you for calling BRANDiD customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
+				$response->addSay("Thank you for calling branded customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
 				$this->_writelog('ERROR exception "' . $e->getMessage() . '" (index).');
 			}			
 		}
@@ -89,7 +94,7 @@ class brandidhelpline extends CI_Controller
 	function forwardcall()
 	{
 		$response = $this->twilio->addResponse();
-
+		
 		if (isset($_REQUEST['ConferenceSid']) && isset($_REQUEST['CallStatus']))
 		{
 			$conference_sid = urldecode($_REQUEST['ConferenceSid']);
@@ -97,7 +102,7 @@ class brandidhelpline extends CI_Controller
 			$call_from = isset($_REQUEST['CallFrom']) ? urldecode($_REQUEST['CallFrom']) : $this->caller_id;
 
 			// If the call hasn't been answered, forward it. 
-			if ($call_status == 'no-answer' || $call_status == 'failed' || $call_status == 'busy')
+			if ($call_status == 'no-answer' || $call_status == 'failed' || $call_status == 'busy' || $this->session->userdata('Accepted') !== 'true')
 			{
 				$this->twilio->call($call_from, $this->support_mobile, array('Url' => site_url('brandidhelpline/callagent/?ConferenceSid=' . urlencode($conference_sid)), 'StatusCallback' => site_url('brandidhelpline/completedcall/?ConferenceSid=' . urlencode($conference_sid)), 'Timeout' => $this->no_voicemail_timeout));
 				$this->_writelog("$conference_sid Forwarding call with status $call_status (forwardcall)...");
@@ -128,7 +133,7 @@ class brandidhelpline extends CI_Controller
 			$call_status = $_REQUEST['CallStatus'];
 
 			// If the call hasn't been answered, interrupt conference.
-			if ($call_status == 'no-answer' || $call_status == 'failed' || $call_status == 'busy')
+			if ($call_status == 'no-answer' || $call_status == 'failed' || $call_status == 'busy' || $this->session->userdata('Accepted') !== 'true')
 			{
 				// Remove incoming call from conference
 				$this->twilio->modifyCall($conference_sid, site_url('brandidhelpline/failedcall/'));
@@ -166,25 +171,53 @@ class brandidhelpline extends CI_Controller
 
 	/**
 	 * Join agent to the incoming call's conference.
+	 * 
+	 * Use session cookies here to store attempts and whether call accepted (needed as can't change query parameters on StatusCallback function).
+	 * Don't use them generally as Twilio client's session cookies are per call, so are not transferred between incoming and agent calls. Gah. 
+	 * (NB Are also lost when callagent is called again with mobile number.)
 	 */	
 	function callagent()
 	{
 		$response = $this->twilio->addResponse();
 
-		if (isset($_REQUEST['ConferenceSid']))
+		if (isset($_REQUEST['ConferenceSid']) && isset($_REQUEST['CallStatus']))
 		{
-			$conference_sid = urldecode($_REQUEST['ConferenceSid']);
+			$conference_sid = $_REQUEST['ConferenceSid'];
+			$call_status = $_REQUEST['CallStatus'];
+			$attempt = $this->session->userdata('Attempt') ? $this->session->userdata('Attempt') : 0;
 
-			// Join incoming caller's conference
-			$response->addSay('This is a call from BRANDiD.', $this->voice);
-			$dial = $response->addDial();
-			$dial->addConference($conference_sid, array('beep' => 'false', 'endConferenceOnExit' => 'true'));
-			$this->_writelog("$conference_sid Connected agent to call (callagent).");
+			// If been here before without a reply but Twilio has followed the redirect anyway. 
+			if ($call_status == 'no-answer' || $call_status == 'failed' || $call_status == 'busy')
+			{
+				$this->_writelog("$conference_sid Agent refused to accept call with status $call_status on attempt $attempt (callagent).");
+			}
+			// Agent pressed key to answer?
+			elseif (isset($_REQUEST['Digits']))
+			{
+				// Join incoming caller's conference
+				$dial = $response->addDial();
+				$dial->addConference($conference_sid, array('beep' => 'false', 'endConferenceOnExit' => 'true'));
+				$this->session->set_userdata('Accepted', 'true');
+				$this->_writelog("$conference_sid Connected agent to call on attempt $attempt (callagent).");
+			}
+			else
+			{
+				$gather = $response->addGather(array('timeout' => $this->agent_timeout, 'numDigits' => 1));
+				$gather->addSay('This is a call from branded. Press any key to answer.', $this->voice);
+				$this->_writelog("$conference_sid Waiting for agent to accept call attempt $attempt (callagent).");
+
+				// Being ignored? Try again after timeout.
+				if ($attempt < $this->agent_attempts)
+				{
+					$this->session->set_userdata('Attempt', $attempt + 1);					
+					$dial = $response->addRedirect(site_url('brandidhelpline/callagent/?ConferenceSid=' . urlencode($conference_sid)));
+				}
+			}
 		}
 		else
 		{
-			$response->addSay("This is a call from BRANDiD. I'm afraid something's gone wrong and I can't connect you to the caller. Sorry about that.", $this->voice);
-			$this->_writelog("ERROR No CallSid (callangent).");
+			$response->addSay("This is a call from branded. I'm afraid something's gone wrong and I can't connect you to the caller. Sorry about that.", $this->voice);
+			$this->_writelog("ERROR No CallSid (callagent).");
 		}
 
 		$view['response'] = $response;
@@ -208,7 +241,7 @@ class brandidhelpline extends CI_Controller
 	{
 		if ($this->log)
 		{
-			write_file('./' . $this->logfile, date('D d M Y H:i:s') . ' ' . $data . "\r\n", 'a');
+			write_file('./application/logs/' . $this->logfile, date('D d M Y H:i:s') . ' ' . $data . "\r\n", 'a');
 		}
 	}
 }

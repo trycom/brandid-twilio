@@ -25,6 +25,7 @@ It should work almost from the box, but there are a few config things that need 
 application/config/config.php
 
 - Point base_url at your site's URL
+- Add an encryption key to encryption_key, maybe from here http://jeffreybarke.net/tools/codeigniter-encryption-key-generator/
 
 application/config/twilio.php
 
