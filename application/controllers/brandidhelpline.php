@@ -61,20 +61,20 @@ class brandidhelpline extends CI_Controller
 
 					$this->twilio->call($call_from, $this->support_office, array('Url' => site_url('brandidhelpline/callagent/?ConferenceSid=' . urlencode($conference_sid)), 'StatusCallback' => site_url('brandidhelpline/forwardcall/?ConferenceSid=' . urlencode($conference_sid) . '&CallFrom=' . urlencode($call_from))));
 
-					$response->addSay('Thank you for calling BRANDiD customer support. Please hold.', $this->voice);
+					$response->addSay('Thank you for calling branded customer support. Please wait while we connect you to a support agent.', $this->voice);
 					$dial = $response->addDial();
 					$dial->addConference($conference_sid, array('waitUrl' => $this->hold_music, 'beep' => 'false'));
 					$this->_writelog("$conference_sid Connecting call... (index)");
 				}
 				else
 				{
-					$response->addSay("Thank you for calling BRANDiD customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
+					$response->addSay("Thank you for calling branded customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
 					$this->_writelog("ERROR No CallSid (index).");
 				}
 			}
 			catch (Exception $e)
 			{
-				$response->addSay("Thank you for calling BRANDiD customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
+				$response->addSay("Thank you for calling branded customer support. I'm sorry, but there has been a problem connecting your call. Please try again later.", $this->voice);
 				$this->_writelog('ERROR exception "' . $e->getMessage() . '" (index).');
 			}			
 		}
@@ -176,14 +176,14 @@ class brandidhelpline extends CI_Controller
 			$conference_sid = urldecode($_REQUEST['ConferenceSid']);
 
 			// Join incoming caller's conference
-			$response->addSay('This is a call from BRANDiD.', $this->voice);
+			$response->addSay('This is a call from BRANDiD.', $this->voice); // twilio should say 'This is a call from branded, please dial any key to accept the call.' ELSE forward to mobile.
 			$dial = $response->addDial();
 			$dial->addConference($conference_sid, array('beep' => 'false', 'endConferenceOnExit' => 'true'));
 			$this->_writelog("$conference_sid Connected agent to call (callagent).");
 		}
 		else
 		{
-			$response->addSay("This is a call from BRANDiD. I'm afraid something's gone wrong and I can't connect you to the caller. Sorry about that.", $this->voice);
+			$response->addSay("This is a call from branded. I'm afraid something's gone wrong and I can't connect you to the caller. Sorry about that.", $this->voice);
 			$this->_writelog("ERROR No CallSid (callangent).");
 		}
 
