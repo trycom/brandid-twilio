@@ -23,12 +23,12 @@ $config['mode']   = 'sandbox';
 /**
 * Account SID
 **/
-$config['account_sid']   = '';
+$config['account_sid']   = 'ACe27c18b2600c4d14980fc5549e4c9cdb';
 
 /**
 * Auth Token
 **/
-$config['auth_token']    = '';
+$config['auth_token']    = 'b9eb1a0107f7455059ec3ad46a3cfaf7';
 
 /**
 * API Version
@@ -38,19 +38,19 @@ $config['api_version']   = '2010-04-01';
 /**
 * Twilio Phone Number
 **/
-$config['number']        = '+';
+$config['number']        = '+442034752952';
 
 /**
 * Outgoing calls number
 */
-$config['caller_id']        = '+';
+$config['caller_id']        = '+442074914870';
 
 /**
  * Support numbers
  */
 
-$config['support_office'] = '+';
-$config['support_mobile'] = '+';
+$config['support_office'] = '+442074914870';
+$config['support_mobile'] = '+447917138230';
 
 /**
  * Default voice
@@ -82,7 +82,7 @@ $config['office_hours_end'] = 18;
  * Hold music to play
  */
 
-$config['hold_music'] = 'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
+$config['hold_music'] = 'http://bits.meloncholy.com/brandid-twilio/holdmusic/godfather-holdmusic.mp3';
 
 /**
  * Log calls?

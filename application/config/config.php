@@ -15,7 +15,7 @@
 |
 */
 //$config['base_url']	= 'http://katie/BRANDiD-Twilio/';
-$config['base_url']	= 'http://bits.meloncholy.com/brandid-twilio/';
+$config['base_url']	= 'http://twilio.getbrandid.com/';
 
 /*
 |--------------------------------------------------------------------------
@@ -225,7 +225,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = 'V&kWhyJBC2FEtq.H$w|nzfl(RHYs9_Ex';
 
 /*
 |--------------------------------------------------------------------------
