@@ -49,8 +49,8 @@ $config['caller_id']        = '+442074914870';
  * Support numbers
  */
 
-$config['support_office'] = '+442074914870';
-$config['support_mobile'] = '+447917138230';
+$config['support_office'] = '+447917138230';
+$config['support_mobile'] = '+447739070851';
 
 /**
  * Default voice
@@ -82,7 +82,7 @@ $config['office_hours_end'] = 18;
  * Hold music to play
  */
 
-$config['hold_music'] = 'http://bits.meloncholy.com/brandid-twilio/holdmusic/godfather-holdmusic.mp3';
+$config['hold_music'] = 'http://twilio.getbrandid.com/godfather-holdmusic.mp3';
 
 /**
  * Log calls?
